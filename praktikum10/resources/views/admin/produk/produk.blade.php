@@ -12,6 +12,7 @@
     </div>
     <div class="card mb-4">
         <div class="card-header">
+            <a class="btn btn-primary" href="{{ url('produk/create') }}">Create</a>
         </div>
         <div class="card-body">
             <table id="datatablesSimple">
@@ -26,6 +27,7 @@
                         <th>Minimal Stok</th>
                         <th>Deskripsi</th>
                         <th>Kategori Produk</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -39,6 +41,7 @@
                         <th>Minimal Stok</th>
                         <th>Deskripsi</th>
                         <th>Kategori Produk</th>
+                        <th>Aksi</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -56,6 +59,11 @@
 														{{--  <td>{{ $p->kategori_produk_id }}</td> --}}
                             <td>{{ $p->nama_kategori }}</td>
                             {{-- nama_kategori diambil dari join yang ada di controller produk yang sudah dibuatkan join --}}
+                            {{--tambahin tombol--}}
+                            <td>
+                                <a href="{{ url('produk/edit/' . $p->id) }}" class="btn btn-warning">Edit</a>
+                                <a onclick="return confirm('Apakah Anda yakin ingin menghapus produk?')" href="{{ url('produk/delete/' . $p->id) }}" class="btn btn-danger" >Delete</a>
+                            </td>
                         </tr>
                         @php $no++; @endphp
                     @endforeach

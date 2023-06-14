@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KategoriProduk;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+
 
 class ProdukController extends Controller
 {
@@ -16,7 +18,7 @@ class ProdukController extends Controller
         $produk = Produk::getAllProduk();
 
         //Mengirim data 
-        return view('produk.produk', compact('produk'));
+        return view('admin.produk.produk', compact('produk'));
     }
 
     /**
@@ -24,7 +26,12 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        //
+        // Isi data dari table kategori
+        $kategori_produk = KategoriProduk::all();
+        // Isi data dari produk
+        $produk = Produk::all();
+        // kirim data ke view
+        return view('admin.produk.create', compact('kategori_produk', 'produk'));
     }
 
     /**
@@ -32,7 +39,21 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //membuat tambah data
+        $produk = new Produk;
+        // ngakses data kode didatabase = inputan dari user
+        $produk->kode = $request->kode;
+        $produk->nama = $request->nama;
+        $produk->harga_jual = $request->harga_jual;
+        $produk->harga_beli = $request->harga_beli;
+        $produk->stok = $request->stok;
+        $produk->min_stok = $request->min_stok;
+        $produk->deskripsi = $request->deskripsi;
+        $produk->kategori_produk_id = $request->kategori_produk_id;
+        // untuk menyimpan data yang diinput user ke database
+        $produk->save();
+        // alihin ke halaman 
+        return redirect('produk');
     }
 
     /**
@@ -48,22 +69,44 @@ class ProdukController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        //arahkan ke halaman edit
+        $kategori_produk = KategoriProduk::all();
+        $produk = Produk::where('id', $id)->get();
+        return view('admin.produk.edit', compact(
+            'produk',
+            'kategori_produk'
+        ));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $produk = Produk::find($request->id);
+        $produk->kode = $request->kode;
+        $produk->nama = $request->nama;
+        $produk->harga_jual = $request->harga_jual;
+        $produk->harga_beli = $request->harga_beli;
+        $produk->stok = $request->stok;
+        $produk->min_stok = $request->min_stok;
+        $produk->deskripsi = $request->deskripsi;
+        $produk->kategori_produk_id = $request->kategori_produk_id;
+        $produk->save();
+        return redirect('produk');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        // Cari data berdasarkan id trs kita simpen di variabel produk
+        $produk = Produk::find($id);
+        // untuk hapus data
+        $produk->delete();
+
+        // balikin ke halaman tabel produk
+        return redirect('produk')->with('success', 'Produk berhasil dihapus');
     }
 }

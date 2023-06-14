@@ -13,6 +13,9 @@ class Produk extends Model
     // hubungin tabel produk
     protected $table = 'produk';
 
+    // matiin inputan timestamps
+    public $timestamps = false;
+
     // kolom yang bisa diisi
     protected $fillable = [
         'kode',             // Kode produk

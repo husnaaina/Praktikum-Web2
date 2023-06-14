@@ -34,3 +34,18 @@ Route::get('/home', [FrontendController::class, 'index']);
 
 // Bikin routing ke halaman depan about
 Route::get('/about', [FrontendController::class, 'about']);
+
+// Bikin routing ke halaman form tambah data
+Route::get('/produk/create', [ProdukController::class, 'create']);
+
+// Bikin routing ke halaman fungsi store
+Route::post('/produk/store', [ProdukController::class, 'store']);
+
+// Bikin routing ke halaman form edit
+Route::get('produk/edit/{id}', [ProdukController::class, 'edit']);
+
+// Bikin Routing untuk validasi data edit update
+Route::put('/produk/update/{id}', [ProdukController::class, 'update']);
+
+// Buat routing untuk delete data
+Route::get('/produk/delete/{id}', [ProdukController::class, 'destroy']);
