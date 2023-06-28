@@ -1,5 +1,8 @@
 @extends('admin.layout.appadmin')
 @section('content')
+
+@if (Auth::user()->role != 'pelanggan')
+
     <h1 class="mt-4">Tables</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
@@ -12,7 +15,9 @@
     </div>
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-primary" href="{{ url('produk/create') }}">Create</a>
+            @if (Auth::user()->role == 'admin')
+	    <a class="btn btn-primary" href="{{ url('produk/create') }}">Create</a>
+            @endif
         </div>
         <div class="card-body">
             <table id="datatablesSimple">
@@ -62,7 +67,9 @@
                             {{--tambahin tombol--}}
                             <td>
                                 <a href="{{ url('produk/edit/' . $p->id) }}" class="btn btn-warning">Edit</a>
-                                <a onclick="return confirm('Apakah Anda yakin ingin menghapus produk?')" href="{{ url('produk/delete/' . $p->id) }}" class="btn btn-danger" >Delete</a>
+                                    @if (Auth::user()->role == 'admin')
+	                            <a href="{{ url('produk/delete/' . $p->id) }}" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk?')">Delete</a>
+                                    @endif
                             </td>
                         </tr>
                         @php $no++; @endphp
@@ -72,4 +79,9 @@
         </div>
     </div>
     </div>
+
+    @else
+        @include('admin.access_denied')
+    @endif
+
 @endsection
